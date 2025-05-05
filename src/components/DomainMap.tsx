@@ -35,11 +35,11 @@ const DomainMap = () => {
 
         // Add markers for nearby attractions
         const attractions = [
-          { name: "Gorges du Verdon", coordinates: [6.3278, 43.7470], distance: "30 km" },
-          { name: "Lac de Sainte-Croix", coordinates: [6.1425, 43.7720], distance: "35 km" },
-          { name: "Golfe de Saint-Tropez", coordinates: [6.6400, 43.2677], distance: "45 km" },
-          { name: "Cannes", coordinates: [7.0175, 43.5513], distance: "60 km" },
-          { name: "Fréjus (Côte méditerranéenne)", coordinates: [6.7373, 43.4332], distance: "53 min" }
+          { name: "Gorges du Verdon", coordinates: [6.3278, 43.7470] as [number, number], distance: "30 km" },
+          { name: "Lac de Sainte-Croix", coordinates: [6.1425, 43.7720] as [number, number], distance: "35 km" },
+          { name: "Golfe de Saint-Tropez", coordinates: [6.6400, 43.2677] as [number, number], distance: "45 km" },
+          { name: "Cannes", coordinates: [7.0175, 43.5513] as [number, number], distance: "60 km" },
+          { name: "Fréjus (Côte méditerranéenne)", coordinates: [6.7373, 43.4332] as [number, number], distance: "53 min" }
         ];
 
         attractions.forEach(attraction => {
@@ -51,9 +51,9 @@ const DomainMap = () => {
 
         // Add markers for accessibility points
         const accessPoints = [
-          { name: "Aéroport Nice Côte d'Azur", coordinates: [7.2661, 43.6584], info: "90 km (1h30)" },
-          { name: "Gare TGV Les Arcs-Draguignan", coordinates: [6.4798, 43.4627], info: "35 km (40 min)" },
-          { name: "Autoroute A8", coordinates: [6.5370, 43.4776], info: "30 km" }
+          { name: "Aéroport Nice Côte d'Azur", coordinates: [7.2661, 43.6584] as [number, number], info: "90 km (1h30)" },
+          { name: "Gare TGV Les Arcs-Draguignan", coordinates: [6.4798, 43.4627] as [number, number], info: "35 km (40 min)" },
+          { name: "Autoroute A8", coordinates: [6.5370, 43.4776] as [number, number], info: "30 km" }
         ];
 
         accessPoints.forEach(point => {

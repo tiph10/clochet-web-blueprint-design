@@ -25,7 +25,12 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     rollupOptions: {
-      external: ['']
+      external: [],
+      output: {
+        manualChunks: {
+          mapbox: ['mapbox-gl']
+        }
+      }
     }
   }
 }));
