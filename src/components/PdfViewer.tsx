@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -41,9 +42,9 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
     setScale(newScale);
   }
 
-  // Pour les fichiers dans le dossier public, assurez-vous d'utiliser un chemin relatif
-  // par rapport à la racine du serveur
-  const pdfPath = pdfUrl.startsWith('http') ? pdfUrl : `${process.env.PUBLIC_URL || ''}${pdfUrl}`;
+  // Fix for the process.env.PUBLIC_URL reference
+  // Use a relative path directly instead of relying on process.env
+  const pdfPath = pdfUrl.startsWith('http') ? pdfUrl : `${pdfUrl}`;
 
   return (
     <div className="flex flex-col items-center">
