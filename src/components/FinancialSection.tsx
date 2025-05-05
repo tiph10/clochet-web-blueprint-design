@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -20,15 +19,16 @@ const FinancialSection = () => {
 
   const financingData = [
     { name: 'Crédit-bail', value: 1100000 },
-    { name: 'Prêt bancaire', value: 500000 },
+    { name: 'Prêt bancaire', value: 905000 },
     { name: 'Apport personnel', value: 30000 },
-    { name: 'Subventions', value: 62960 },
+    { name: 'Subventions', value: 95000 },
   ];
 
+  // Mise à jour des données de revenus selon le plan de trésorerie (doc 3)
   const revenueData = [
-    { year: 'Année 1', hebergement: 195000, pension: 38400, activites: 11760, evenements: 34000, annexes: 11500 },
-    { year: 'Année 2', hebergement: 232000, pension: 43200, activites: 14400, evenements: 42500, annexes: 14800 },
-    { year: 'Année 3', hebergement: 267000, pension: 48000, activites: 16800, evenements: 52000, annexes: 16700 },
+    { year: 'Année 1', hebergement: 189540, pension: 31320, activites: 9720, evenements: 39420, annexes: 0 },
+    { year: 'Année 2', hebergement: 199017, pension: 32886, activites: 10206, evenements: 41391, annexes: 0 },
+    { year: 'Année 3', hebergement: 208968, pension: 34530, activites: 10716, evenements: 43461, annexes: 0 },
   ];
 
   const cashFlowData = [
@@ -345,7 +345,7 @@ const FinancialSection = () => {
                             <ul className="text-sm space-y-1">
                               <li className="flex justify-between">
                                 <span>Montant financé:</span>
-                                <span className="font-medium">~500 000 €</span>
+                                <span className="font-medium">905 000 €</span>
                               </li>
                               <li className="flex justify-between">
                                 <span>Durée:</span>
@@ -451,45 +451,45 @@ const FinancialSection = () => {
                         <TableBody>
                           <TableRow>
                             <TableCell className="font-medium">Hébergements (gîtes et chambres)</TableCell>
-                            <TableCell className="text-right">195 000 € (67,1%)</TableCell>
-                            <TableCell className="text-right">232 000 € (66,9%)</TableCell>
-                            <TableCell className="text-right">267 000 € (66,7%)</TableCell>
+                            <TableCell className="text-right">189 540 € (70,2%)</TableCell>
+                            <TableCell className="text-right">199 017 € (70,2%)</TableCell>
+                            <TableCell className="text-right">208 968 € (70,2%)</TableCell>
                           </TableRow>
                           <TableRow>
                             <TableCell className="font-medium">Pensions équestres</TableCell>
-                            <TableCell className="text-right">38 400 € (13,2%)</TableCell>
-                            <TableCell className="text-right">43 200 € (12,5%)</TableCell>
-                            <TableCell className="text-right">48 000 € (12,0%)</TableCell>
+                            <TableCell className="text-right">31 320 € (11,6%)</TableCell>
+                            <TableCell className="text-right">32 886 € (11,6%)</TableCell>
+                            <TableCell className="text-right">34 530 € (11,6%)</TableCell>
                           </TableRow>
                           <TableRow>
                             <TableCell className="font-medium">Activités équestres</TableCell>
-                            <TableCell className="text-right">11 760 € (4,0%)</TableCell>
-                            <TableCell className="text-right">14 400 € (4,2%)</TableCell>
-                            <TableCell className="text-right">16 800 € (4,2%)</TableCell>
+                            <TableCell className="text-right">9 720 € (3,6%)</TableCell>
+                            <TableCell className="text-right">10 206 € (3,6%)</TableCell>
+                            <TableCell className="text-right">10 716 € (3,6%)</TableCell>
                           </TableRow>
                           <TableRow>
                             <TableCell className="font-medium">Événements</TableCell>
-                            <TableCell className="text-right">34 000 € (11,7%)</TableCell>
-                            <TableCell className="text-right">42 500 € (12,3%)</TableCell>
-                            <TableCell className="text-right">52 000 € (13,0%)</TableCell>
+                            <TableCell className="text-right">39 420 € (14,6%)</TableCell>
+                            <TableCell className="text-right">41 391 € (14,6%)</TableCell>
+                            <TableCell className="text-right">43 461 € (14,6%)</TableCell>
                           </TableRow>
                           <TableRow>
                             <TableCell className="font-medium">Annexes de services</TableCell>
-                            <TableCell className="text-right">11 500 € (4,0%)</TableCell>
-                            <TableCell className="text-right">14 800 € (4,3%)</TableCell>
-                            <TableCell className="text-right">16 700 € (4,2%)</TableCell>
+                            <TableCell className="text-right">0 € (0%)</TableCell>
+                            <TableCell className="text-right">0 € (0%)</TableCell>
+                            <TableCell className="text-right">0 € (0%)</TableCell>
                           </TableRow>
                           <TableRow className="bg-cream-50">
                             <TableCell className="font-bold">TOTAL</TableCell>
-                            <TableCell className="text-right font-bold">290 660 €</TableCell>
-                            <TableCell className="text-right font-bold">346 900 €</TableCell>
-                            <TableCell className="text-right font-bold">400 500 €</TableCell>
+                            <TableCell className="text-right font-bold">270 000 €</TableCell>
+                            <TableCell className="text-right font-bold">283 500 €</TableCell>
+                            <TableCell className="text-right font-bold">297 675 €</TableCell>
                           </TableRow>
                         </TableBody>
                       </Table>
                     </div>
                     <div className="text-sm text-olive-600 mt-2">
-                      <p>Croissance Année 1 à 2: +19,3% | Croissance Année 2 à 3: +15,5%</p>
+                      <p>Croissance Année 1 à 2: +5,0% | Croissance Année 2 à 3: +5,0%</p>
                     </div>
                   </div>
                 </div>
@@ -506,9 +506,9 @@ const FinancialSection = () => {
                               Environ 25% du chiffre d'affaires
                             </p>
                             <ul className="list-disc list-inside text-sm text-olive-600 space-y-1 pl-2">
-                              <li>Consommables hébergement</li>
-                              <li>Charges liées aux activités équestres</li>
-                              <li>Coûts variables événementiel</li>
+                              <li>Consommables hébergement: 10 000 €</li>
+                              <li>Charges liées aux activités équestres: 24 092 €</li>
+                              <li>Personnel équestre: 30 000 €</li>
                             </ul>
                           </div>
                           
@@ -791,6 +791,7 @@ const FinancialSection = () => {
                           <ul className="list-disc list-inside text-sm text-olive-700 space-y-1">
                             <li>Conseil Régional PACA: Dispositifs pour le tourisme durable</li>
                             <li>Conseil Départemental du Var: Soutien aux hébergements labellisés</li>
+                            <li>Subvention pour le tourisme rural: 20 000 €</li>
                           </ul>
                         </CardContent>
                       </Card>
@@ -801,6 +802,7 @@ const FinancialSection = () => {
                           <ul className="list-disc list-inside text-sm text-olive-700 space-y-1">
                             <li>Prêt Tourisme de la BPI</li>
                             <li>Garantie ÉGALITÉ Femmes (jusqu'à 80% du prêt bancaire)</li>
+                            <li>Prêts à taux zéro (équipements écologiques): 30 000 €</li>
                           </ul>
                         </CardContent>
                       </Card>
@@ -828,7 +830,17 @@ const FinancialSection = () => {
                           <h5 className="font-medium mb-2">Dotation Jeune Agriculteur (DJA)</h5>
                           <ul className="list-disc list-inside text-sm text-olive-700 space-y-1">
                             <li>Si moins de 40 ans et diplôme agricole</li>
-                            <li>Montant potentiel: 15 000 à 30 000 €</li>
+                            <li>Aides à l'installation (agriculture): 20 000 €</li>
+                          </ul>
+                        </CardContent>
+                      </Card>
+                      
+                      <Card className="border-olive-200">
+                        <CardContent className="p-4">
+                          <h5 className="font-medium mb-2">Aides spécifiques</h5>
+                          <ul className="list-disc list-inside text-sm text-olive-700 space-y-1">
+                            <li>Subventions pour le bien-être animal: 10 000 €</li>
+                            <li>Aides à l'emploi en milieu rural: 15 000 €</li>
                           </ul>
                         </CardContent>
                       </Card>
@@ -849,16 +861,6 @@ const FinancialSection = () => {
                           <ul className="list-disc list-inside text-sm text-olive-700 space-y-1">
                             <li>Pour projets innovants ou structurants de la filière équine</li>
                             <li>Financement potentiel: 20 à 30 000 €, soit 10-15% des infrastructures cheval</li>
-                          </ul>
-                        </CardContent>
-                      </Card>
-                      
-                      <Card className="border-olive-200">
-                        <CardContent className="p-4">
-                          <h5 className="font-medium mb-2">Aides filière cheval</h5>
-                          <ul className="list-disc list-inside text-sm text-olive-700 space-y-1">
-                            <li>Labels Qualit'Équidés</li>
-                            <li>Centre de Tourisme Équestre</li>
                           </ul>
                         </CardContent>
                       </Card>
@@ -886,17 +888,17 @@ const FinancialSection = () => {
                         <CardContent className="p-4">
                           <h5 className="font-medium mb-2">Diversification des sources de revenus</h5>
                           <p className="text-sm text-olive-700 mb-3">
-                            Équilibre entre hébergement (67%), activités équestres (17%) et événementiel (13%)
+                            Équilibre entre hébergement (70%), activités équestres (15%) et événementiel (15%)
                           </p>
                           <div className="h-[150px]">
                             <ResponsiveContainer width="100%" height="100%">
                               <PieChart>
                                 <Pie
                                   data={[
-                                    { name: 'Hébergement', value: 67 },
-                                    { name: 'Activités équestres', value: 17 },
-                                    { name: 'Événementiel', value: 13 },
-                                    { name: 'Annexes', value: 3 },
+                                    { name: 'Hébergement', value: 70 },
+                                    { name: 'Activités équestres', value: 15 },
+                                    { name: 'Événementiel', value: 15 },
+                                    { name: 'Annexes', value: 0 },
                                   ]}
                                   cx="50%"
                                   cy="50%"
