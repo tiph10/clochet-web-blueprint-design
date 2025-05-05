@@ -3,7 +3,9 @@ import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MapPin, Home, Leaf, Building, Bed, Users, Clock, ArrowRight } from "lucide-react";
+import { MapPin, Home, Leaf, Building, Bed, Users, Clock, ArrowRight, FileText } from "lucide-react";
+import DomainMap from './DomainMap';
+import PdfViewer from './PdfViewer';
 
 const ProjectSection = () => {
   return (
@@ -29,13 +31,35 @@ const ProjectSection = () => {
               </p>
             </div>
             
+            <div className="bg-white p-6 rounded-lg border border-olive-100 mb-8">
+              <p className="text-olive-700 mb-4">
+                Le projet consiste à la création d'un haras d'exception alliant bien-être équin, préservation du patrimoine et hébergement haut de gamme. Ce domaine unique proposera des gîtes de charme, des chambres atypiques (cottages), des activités équestres éthiques et des événements sur mesure, le tout dans un cadre naturel raffiné et engagé écologiquement.
+              </p>
+              <p className="text-olive-700 mb-4">
+                Le domaine incarne une alliance entre bien-être, écologie et préservation de la biodiversité, tout en valorisant l'histoire des bâtiments et le respect des animaux.
+              </p>
+              <p className="text-olive-700 mb-4">
+                Il met à l'honneur le bien être du cheval et propose des prestations haut de gamme, alliant raffinement et engagement responsable.
+              </p>
+              
+              <h4 className="font-semibold text-lg mt-6 mb-3 text-olive-700">Une référence en bien-être équin</h4>
+              <p className="text-olive-700 mb-4">
+                L'objectif est de faire du domaine un lieu d'exception dédié au bien-être du cheval, un havre de paix où sérénité et soins sont au cœur des priorités. Il accueille aussi bien des chevaux retraités que des chevaux rescapés de laboratoires ou en convalescence, ainsi que des chevaux de propriétaire. Nous veillerons à l'alimentation biologique pour les chevaux.
+              </p>
+              
+              <h4 className="font-semibold text-lg mt-6 mb-3 text-olive-700">Un cadre idyllique et raffiné</h4>
+              <p className="text-olive-700">
+                Pensé comme un hôtel particulier luxueux et intimiste, le domaine offre une approche écoresponsable, privilégiant la biodiversité, les circuits courts et les matériaux naturels. Ici, l'élégance se mêle à la nature pour offrir une expérience unique, où chaque détail est conçu pour favoriser la détente et l'harmonie entre l'homme et l'animal.
+              </p>
+            </div>
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
               <div className="bg-white p-6 rounded-lg border border-olive-100">
                 <h4 className="font-semibold text-lg mb-4 flex items-center">
                   <MapPin className="mr-2 text-olive-600" size={20} />
                   Localisation Stratégique
                 </h4>
-                <ul className="space-y-2 text-olive-700">
+                <ul className="space-y-2 text-olive-700 mb-4">
                   <li className="flex items-start">
                     <ArrowRight className="mr-2 text-olive-500 mt-1" size={16} />
                     <span><strong>Commune:</strong> Ampus, Var (83)</span>
@@ -54,9 +78,7 @@ const ProjectSection = () => {
                   </li>
                 </ul>
                 
-                <div className="mt-4 bg-cream-200 h-48 rounded-md flex items-center justify-center">
-                  <p className="text-cream-700">Carte du domaine</p>
-                </div>
+                <DomainMap />
               </div>
               
               <div className="bg-white p-6 rounded-lg border border-olive-100">
@@ -171,9 +193,11 @@ const ProjectSection = () => {
                   <Card>
                     <CardContent className="p-6">
                       <div className="mb-4">
-                        <div className="bg-cream-200 h-48 rounded-md flex items-center justify-center">
-                          <p className="text-cream-700">Photo actuelle du domaine</p>
-                        </div>
+                        <img 
+                          src="/photos/AVANT.png" 
+                          alt="État actuel du domaine" 
+                          className="w-full h-auto rounded-md"
+                        />
                       </div>
                       <h4 className="font-semibold text-lg mb-2">État Actuel</h4>
                       <ul className="list-disc list-inside space-y-1 text-olive-700">
@@ -188,9 +212,11 @@ const ProjectSection = () => {
                   <Card>
                     <CardContent className="p-6">
                       <div className="mb-4">
-                        <div className="bg-olive-200 h-48 rounded-md flex items-center justify-center">
-                          <p className="text-olive-700">Rendu projeté du domaine</p>
-                        </div>
+                        <img 
+                          src="/photos/apres.png" 
+                          alt="Rendu projeté du domaine" 
+                          className="w-full h-auto rounded-md"
+                        />
                       </div>
                       <h4 className="font-semibold text-lg mb-2">Vision Future</h4>
                       <ul className="list-disc list-inside space-y-1 text-olive-700">
@@ -267,6 +293,18 @@ const ProjectSection = () => {
             </Tabs>
           </div>
           
+          {/* New section: Concept & Design */}
+          <div className="animate-fade-in [animation-delay:350ms] opacity-0">
+            <h3 className="text-2xl font-semibold text-olive-700 mb-6 flex items-center">
+              <FileText className="mr-2 text-olive-600" size={24} />
+              Concept & Design
+            </h3>
+            
+            <div className="bg-white p-6 rounded-lg border border-olive-100">
+              <PdfViewer pdfUrl="/photos/ESTHETIQUE.pdf" />
+            </div>
+          </div>
+          
           {/* 3. Porteur du projet */}
           <div className="animate-fade-in [animation-delay:400ms] opacity-0">
             <h3 className="text-2xl font-semibold text-olive-700 mb-6 flex items-center">
@@ -276,12 +314,14 @@ const ProjectSection = () => {
             
             <div className="flex flex-col md:flex-row items-center gap-8 bg-cream-50 p-8 rounded-lg">
               <div className="w-full md:w-1/3">
-                <div className="bg-cream-200 h-64 w-64 mx-auto rounded-full flex items-center justify-center">
-                  <p className="text-cream-700">Photo du porteur</p>
-                </div>
+                <img 
+                  src="/photos/CV.png" 
+                  alt="Tiphanie MORAY" 
+                  className="h-64 w-64 mx-auto rounded-full object-cover"
+                />
               </div>
               <div className="w-full md:w-2/3">
-                <h4 className="text-xl font-semibold mb-3">Claire Dupont</h4>
+                <h4 className="text-xl font-semibold mb-3">Tiphanie MORAY</h4>
                 
                 <Accordion type="single" collapsible className="mt-4">
                   <AccordionItem value="formation">
@@ -411,7 +451,6 @@ const ProjectSection = () => {
                     <li><strong>Accueil personnalisé:</strong> Panier de bienvenue avec produits locaux, lettre manuscrite</li>
                     <li><strong>Digitalisation:</strong> QR code dans chaque hébergement donnant accès aux informations essentielles</li>
                     <li><strong>Service de conciergerie:</strong> Recommandations sur mesure pour balades, artisans, expériences locales</li>
-                    <li><strong>Expériences bien-être:</strong> Massages, yoga en extérieur, bain nordique</li>
                   </ul>
                 </AccordionContent>
               </AccordionItem>
