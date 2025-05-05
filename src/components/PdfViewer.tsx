@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -17,9 +16,16 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [scale, setScale] = useState<number>(1.0);
+  const [error, setError] = useState<string | null>(null);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
+    setError(null);
+  }
+
+  function onDocumentLoadError(err: Error) {
+    console.error('Erreur de chargement du PDF:', err);
+    setError(`Erreur de chargement: ${err.message}`);
   }
 
   function changePage(offset: number) {
@@ -35,11 +41,23 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
     setScale(newScale);
   }
 
+  // Pour les fichiers dans le dossier public, assurez-vous d'utiliser un chemin relatif
+  // par rapport à la racine du serveur
+  const pdfPath = pdfUrl.startsWith('http') ? pdfUrl : `${process.env.PUBLIC_URL || ''}${pdfUrl}`;
+
   return (
     <div className="flex flex-col items-center">
+      {error && (
+        <div className="py-4 text-center text-red-500 mb-4">
+          {error}
+          <p className="mt-2 text-sm">Vérifiez que le chemin "{pdfPath}" est correct.</p>
+        </div>
+      )}
+      
       <Document
-        file={pdfUrl}
+        file={pdfPath}
         onLoadSuccess={onDocumentLoadSuccess}
+        onLoadError={onDocumentLoadError}
         loading={
           <div className="py-8 flex justify-center items-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-olive-700"></div>
@@ -47,62 +65,70 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
         }
         error={
           <div className="py-8 text-center text-red-500">
-            Impossible de charger le PDF. Veuillez vérifier l'URL.
+            Impossible de charger le PDF. Veuillez vérifier le chemin du fichier.
           </div>
         }
+        options={{
+          cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/cmaps/',
+          cMapPacked: true,
+        }}
       >
-        <Page 
-          pageNumber={pageNumber} 
-          scale={scale}
-          renderTextLayer={false}
-          renderAnnotationLayer={false}
-          className="shadow-md"
-        />
+        {numPages && (
+          <Page 
+            pageNumber={pageNumber} 
+            scale={scale}
+            renderTextLayer={false}
+            renderAnnotationLayer={false}
+            className="shadow-md"
+          />
+        )}
       </Document>
       
-      <div className="flex items-center justify-between w-full mt-4">
-        <div className="flex space-x-2">
-          <Button 
-            onClick={() => changePage(-1)} 
-            disabled={pageNumber <= 1}
-            variant="outline"
-            size="sm"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
+      {numPages && (
+        <div className="flex items-center justify-between w-full mt-4">
+          <div className="flex space-x-2">
+            <Button 
+              onClick={() => changePage(-1)} 
+              disabled={pageNumber <= 1}
+              variant="outline"
+              size="sm"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            
+            <span className="px-4 py-1 bg-cream-50 rounded-md text-sm">
+              {pageNumber} / {numPages || '?'}
+            </span>
+            
+            <Button 
+              onClick={() => changePage(1)} 
+              disabled={numPages === null || pageNumber >= numPages}
+              variant="outline"
+              size="sm"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
           
-          <span className="px-4 py-1 bg-cream-50 rounded-md text-sm">
-            {pageNumber} / {numPages || '?'}
-          </span>
-          
-          <Button 
-            onClick={() => changePage(1)} 
-            disabled={numPages === null || pageNumber >= numPages}
-            variant="outline"
-            size="sm"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
+          <div className="flex space-x-2">
+            <Button 
+              onClick={() => changeScale(-0.1)} 
+              variant="outline"
+              size="sm"
+            >
+              <ZoomOut className="h-4 w-4" />
+            </Button>
+            
+            <Button 
+              onClick={() => changeScale(0.1)} 
+              variant="outline"
+              size="sm"
+            >
+              <ZoomIn className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
-        
-        <div className="flex space-x-2">
-          <Button 
-            onClick={() => changeScale(-0.1)} 
-            variant="outline"
-            size="sm"
-          >
-            <ZoomOut className="h-4 w-4" />
-          </Button>
-          
-          <Button 
-            onClick={() => changeScale(0.1)} 
-            variant="outline"
-            size="sm"
-          >
-            <ZoomIn className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
