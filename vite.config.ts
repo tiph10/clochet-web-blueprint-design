@@ -21,14 +21,15 @@ export default defineConfig(({ mode }) => ({
     },
   },
   optimizeDeps: {
-    include: ['mapbox-gl'],
+    include: ['mapbox-gl', 'pdfjs-dist'],
   },
   build: {
     rollupOptions: {
       external: [],
       output: {
         manualChunks: {
-          mapbox: ['mapbox-gl']
+          mapbox: ['mapbox-gl'],
+          pdf: ['pdfjs-dist']
         }
       }
     }

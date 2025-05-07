@@ -24,11 +24,11 @@ const FinancialSection = () => {
     { name: 'Subventions', value: 95000 },
   ];
 
-  // Mise à jour des données de revenus selon le plan de trésorerie (doc 3)
+  // Mise à jour des données de revenus selon le nouveau plan de trésorerie
   const revenueData = [
-    { year: 'Année 1', hebergement: 189540, pension: 31320, activites: 9720, evenements: 39420, annexes: 0 },
-    { year: 'Année 2', hebergement: 199017, pension: 32886, activites: 10206, evenements: 41391, annexes: 0 },
-    { year: 'Année 3', hebergement: 208968, pension: 34530, activites: 10716, evenements: 43461, annexes: 0 },
+    { year: 'Année 1', hebergement: 232344, pension: 38400, activites: 11760, evenements: 48500, annexes: 0 },
+    { year: 'Année 2', hebergement: 243961, pension: 40320, activites: 12348, evenements: 50925, annexes: 0 },
+    { year: 'Année 3', hebergement: 256159, pension: 42336, activites: 12965, evenements: 53471, annexes: 0 },
   ];
 
   const cashFlowData = [
@@ -451,27 +451,27 @@ const FinancialSection = () => {
                         <TableBody>
                           <TableRow>
                             <TableCell className="font-medium">Hébergements (gîtes et chambres)</TableCell>
-                            <TableCell className="text-right">189 540 € (70,2%)</TableCell>
-                            <TableCell className="text-right">199 017 € (70,2%)</TableCell>
-                            <TableCell className="text-right">208 968 € (70,2%)</TableCell>
+                            <TableCell className="text-right">232 344 € (70,2%)</TableCell>
+                            <TableCell className="text-right">243 961 € (70,2%)</TableCell>
+                            <TableCell className="text-right">256 159 € (70,2%)</TableCell>
                           </TableRow>
                           <TableRow>
                             <TableCell className="font-medium">Pensions équestres</TableCell>
-                            <TableCell className="text-right">31 320 € (11,6%)</TableCell>
-                            <TableCell className="text-right">32 886 € (11,6%)</TableCell>
-                            <TableCell className="text-right">34 530 € (11,6%)</TableCell>
+                            <TableCell className="text-right">38 400 € (11,6%)</TableCell>
+                            <TableCell className="text-right">40 320 € (11,6%)</TableCell>
+                            <TableCell className="text-right">42 336 € (11,6%)</TableCell>
                           </TableRow>
                           <TableRow>
                             <TableCell className="font-medium">Activités équestres</TableCell>
-                            <TableCell className="text-right">9 720 € (3,6%)</TableCell>
-                            <TableCell className="text-right">10 206 € (3,6%)</TableCell>
-                            <TableCell className="text-right">10 716 € (3,6%)</TableCell>
+                            <TableCell className="text-right">11 760 € (3,6%)</TableCell>
+                            <TableCell className="text-right">12 348 € (3,6%)</TableCell>
+                            <TableCell className="text-right">12 965 € (3,6%)</TableCell>
                           </TableRow>
                           <TableRow>
                             <TableCell className="font-medium">Événements</TableCell>
-                            <TableCell className="text-right">39 420 € (14,6%)</TableCell>
-                            <TableCell className="text-right">41 391 € (14,6%)</TableCell>
-                            <TableCell className="text-right">43 461 € (14,6%)</TableCell>
+                            <TableCell className="text-right">48 500 € (14,6%)</TableCell>
+                            <TableCell className="text-right">50 925 € (14,6%)</TableCell>
+                            <TableCell className="text-right">53 471 € (14,6%)</TableCell>
                           </TableRow>
                           <TableRow>
                             <TableCell className="font-medium">Annexes de services</TableCell>
@@ -481,9 +481,9 @@ const FinancialSection = () => {
                           </TableRow>
                           <TableRow className="bg-cream-50">
                             <TableCell className="font-bold">TOTAL</TableCell>
-                            <TableCell className="text-right font-bold">270 000 €</TableCell>
-                            <TableCell className="text-right font-bold">283 500 €</TableCell>
-                            <TableCell className="text-right font-bold">297 675 €</TableCell>
+                            <TableCell className="text-right font-bold">331 004 €</TableCell>
+                            <TableCell className="text-right font-bold">347 554 €</TableCell>
+                            <TableCell className="text-right font-bold">364 932 €</TableCell>
                           </TableRow>
                         </TableBody>
                       </Table>
@@ -517,7 +517,7 @@ const FinancialSection = () => {
                             <p className="text-sm text-olive-700 mb-2">
                               Environ 54 593 € par an
                             </p>
-                            <ul className="list-disc list-inside text-sm text-olive-600 space-y-1 pl-2">
+                            <ul className="list-disc list-inside text-sm text-olive-700 space-y-1 pl-2">
                               <li>Taxes foncières: 5 500 €</li>
                               <li>Assurances: 3 500 €</li>
                               <li>Publicité: 8 250 €</li>
@@ -933,7 +933,7 @@ const FinancialSection = () => {
                           <h5 className="font-medium mb-2">Sécurisation du financement</h5>
                           <ul className="list-disc list-inside text-sm text-olive-700 space-y-1">
                             <li>Crédit-bail immobilier (moins risqué qu'un prêt classique)</li>
-                            <li>Échéancier adapté à la montée en puissance du projet</li>
+                            <li>Échéancier adapté à la mont��e en puissance du projet</li>
                           </ul>
                         </CardContent>
                       </Card>

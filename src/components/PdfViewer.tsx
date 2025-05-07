@@ -6,8 +6,12 @@ import 'react-pdf/dist/esm/Page/TextLayer.css';
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
 
-// Set the worker source
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+// Set the worker source to a local path rather than CDN
+// This ensures the worker is bundled with the application
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.js',
+  import.meta.url,
+).toString();
 
 interface PdfViewerProps {
   pdfUrl: string;
@@ -42,21 +46,17 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
     setScale(newScale);
   }
 
-  // Fix for the process.env.PUBLIC_URL reference
-  // Use a relative path directly instead of relying on process.env
-  const pdfPath = pdfUrl.startsWith('http') ? pdfUrl : `${pdfUrl}`;
-
   return (
     <div className="flex flex-col items-center">
       {error && (
         <div className="py-4 text-center text-red-500 mb-4">
           {error}
-          <p className="mt-2 text-sm">Vérifiez que le chemin "{pdfPath}" est correct.</p>
+          <p className="mt-2 text-sm">Vérifiez que le chemin "{pdfUrl}" est correct.</p>
         </div>
       )}
       
       <Document
-        file={pdfPath}
+        file={pdfUrl}
         onLoadSuccess={onDocumentLoadSuccess}
         onLoadError={onDocumentLoadError}
         loading={
