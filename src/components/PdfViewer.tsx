@@ -6,12 +6,8 @@ import 'react-pdf/dist/esm/Page/TextLayer.css';
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
 
-// Set the worker source to a local path rather than CDN
-// This ensures the worker is bundled with the application
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.js',
-  import.meta.url,
-).toString();
+// Configure pdfjs worker correctly - use the same version as our installed package
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 interface PdfViewerProps {
   pdfUrl: string;
@@ -70,7 +66,7 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
           </div>
         }
         options={{
-          cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/cmaps/',
+          cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@' + pdfjs.version + '/cmaps/',
           cMapPacked: true,
         }}
       >

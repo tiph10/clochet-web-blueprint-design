@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -18,8 +19,9 @@ const FinancialSection = () => {
   ];
 
   const financingData = [
-    { name: 'Crédit-bail', value: 1100000 },
-    { name: 'Prêt bancaire', value: 905000 },
+    { name: 'Crédit-bail', value: 850000 },
+    { name: 'Financement à terme', value: 250000 },
+    { name: 'Prêt bancaire', value: 500000 },
     { name: 'Apport personnel', value: 30000 },
     { name: 'Subventions', value: 95000 },
   ];
@@ -321,6 +323,10 @@ const FinancialSection = () => {
                                 <span className="font-medium">1 100 000 €</span>
                               </li>
                               <li className="flex justify-between">
+                                <span>Structure:</span>
+                                <span className="font-medium">850 000 € crédit-bail + 250 000 € financement à terme</span>
+                              </li>
+                              <li className="flex justify-between">
                                 <span>Durée:</span>
                                 <span className="font-medium">15 ans</span>
                               </li>
@@ -345,7 +351,7 @@ const FinancialSection = () => {
                             <ul className="text-sm space-y-1">
                               <li className="flex justify-between">
                                 <span>Montant financé:</span>
-                                <span className="font-medium">905 000 €</span>
+                                <span className="font-medium">500 000 €</span>
                               </li>
                               <li className="flex justify-between">
                                 <span>Durée:</span>
