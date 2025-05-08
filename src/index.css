@@ -16,7 +16,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 80 8% 12%;
 
-    --primary: 80 24% 45%;
+    --primary: 42 42% 70%;
     --primary-foreground: 60 30% 98%;
 
     --secondary: 40 30% 96%;
@@ -33,7 +33,7 @@
 
     --border: 80 10% 88%;
     --input: 80 10% 88%;
-    --ring: 80 24% 40%;
+    --ring: 42 42% 65%;
 
     --radius: 0.5rem;
   }
@@ -48,7 +48,7 @@
     --popover: 80 8% 12%;
     --popover-foreground: 60 30% 98%;
 
-    --primary: 80 24% 65%;
+    --primary: 42 42% 75%;
     --primary-foreground: 80 8% 12%;
 
     --secondary: 80 7% 18%;
@@ -65,7 +65,7 @@
 
     --border: 80 7% 18%;
     --input: 80 7% 18%;
-    --ring: 80 24% 65%;
+    --ring: 42 42% 75%;
   }
 }
 
@@ -96,5 +96,5 @@
 }
 
 .progress-bar {
-  @apply bg-olive-600 h-0 w-full transition-all duration-300;
+  @apply bg-beige-600 h-0 w-full transition-all duration-300;
 }

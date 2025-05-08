@@ -5,19 +5,25 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
+import ImageCarousel from './ImageCarousel';
 
-// Configure pdfjs worker correctly - use the same version as our installed package
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+// Use specific version that matches our installed package
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 interface PdfViewerProps {
   pdfUrl: string;
+  fallbackImages?: string[];
+  title?: string;
 }
 
-const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
+const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl, fallbackImages, title }) => {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [scale, setScale] = useState<number>(1.0);
   const [error, setError] = useState<string | null>(null);
+  
+  // Use the image carousel as a fallback if specified or if there's an error
+  const useImageFallback = !!error || !!fallbackImages;
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
@@ -42,6 +48,11 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
     setScale(newScale);
   }
 
+  // If we have fallback images and either specified to use them or there's an error, show carousel instead
+  if (useImageFallback && fallbackImages && fallbackImages.length > 0) {
+    return <ImageCarousel images={fallbackImages} title={title} />;
+  }
+
   return (
     <div className="flex flex-col items-center">
       {error && (
@@ -57,7 +68,7 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
         onLoadError={onDocumentLoadError}
         loading={
           <div className="py-8 flex justify-center items-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-olive-700"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-beige-700"></div>
           </div>
         }
         error={

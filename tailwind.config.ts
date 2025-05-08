@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -63,18 +62,18 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				olive: {
-					50: '#f9faf5',
-					100: '#f1f4e8',
-					200: '#e2e8d0',
-					300: '#cad8ae',
-					400: '#aec185',
-					500: '#8faa5e',
-					600: '#738c4a',
-					700: '#596e3b',
-					800: '#485833',
-					900: '#3e492f',
-					950: '#20271a',
+				beige: {
+					50: '#faf9f4',
+					100: '#f5f2e8',
+					200: '#ece6d1',
+					300: '#e0d4b2',
+					400: '#d4c294', // RAL 1001 base color (beige)
+					500: '#c6b176',
+					600: '#b29a5c',
+					700: '#97814d',
+					800: '#7a6843',
+					900: '#64563a',
+					950: '#352e1e',
 				},
 				cream: {
 					50: '#fcfbf7',
