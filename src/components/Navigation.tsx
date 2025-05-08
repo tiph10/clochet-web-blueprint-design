@@ -4,38 +4,81 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, Home, Book, BarChart, Wallet, Download } from "lucide-react";
 import { saveAs } from 'file-saver';
 import { toast } from "@/components/ui/use-toast";
+import { jsPDF } from 'jspdf';
 
-// Function to generate a simple report about the site
+// Function to generate a report PDF about the site
 const generateSiteReport = () => {
-  const reportContent = `
-    RAPPORT COMPLET - DOMAINE DU CLOCHET
+  try {
+    const doc = new jsPDF();
     
+    // Title
+    doc.setFontSize(20);
+    doc.setFont("helvetica", "bold");
+    doc.text("RAPPORT COMPLET - DOMAINE DU CLOCHET", 20, 20, { align: "center", maxWidth: 170 });
+    
+    // Content
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    
+    const content = [
+      "Le Domaine du Clochet représente une opportunité d'investissement unique dans le secteur agrotouristique",
+      "en combinant tradition viticole et accueil touristique de qualité.",
+      "",
+      "PROJET:",
+      "- Acquisition et rénovation d'un domaine viticole historique",
+      "- Développement d'une offre œnotouristique complète",
+      "- Création de gîtes et chambres d'hôtes haut de gamme",
+      "",
+      "MARCHÉ:",
+      "- Croissance continue du tourisme expérientiel et de l'œnotourisme",
+      "- Forte demande pour des séjours authentiques en milieu rural",
+      "- Position géographique avantageuse dans une région viticole reconnue",
+      "",
+      "FINANCEMENT:",
+      "- Montant total du projet: 1 100 000 €",
+      "- Crédit-bail immobilier: 850 000 € + 250 000 € en financement à terme",
+      "- Prêt bancaire moyen terme: 500 000 €",
+      "",
+      "Pour plus d'informations, veuillez consulter les documents détaillés.",
+      "",
+      `Domaine du Clochet - © ${new Date().getFullYear()}`
+    ];
+    
+    let y = 30;
+    for (const line of content) {
+      if (y > 280) {
+        doc.addPage();
+        y = 20;
+      }
+      
+      doc.text(line, 20, y);
+      y += 8;
+    }
+    
+    return doc.output('blob');
+  } catch (error) {
+    console.error('Error generating PDF report:', error);
+    const text = `RAPPORT COMPLET - DOMAINE DU CLOCHET\n\n
     Le Domaine du Clochet représente une opportunité d'investissement unique dans le secteur agrotouristique 
-    en combinant tradition viticole et accueil touristique de qualité.
+    en combinant tradition viticole et accueil touristique de qualité.\n\n
+    PROJET:\n
+    - Acquisition et rénovation d'un domaine viticole historique\n
+    - Développement d'une offre œnotouristique complète\n
+    - Création de gîtes et chambres d'hôtes haut de gamme\n\n
+    MARCHÉ:\n
+    - Croissance continue du tourisme expérientiel et de l'œnotourisme\n
+    - Forte demande pour des séjours authentiques en milieu rural\n
+    - Position géographique avantageuse dans une région viticole reconnue\n\n
+    FINANCEMENT:\n
+    - Montant total du projet: 1 100 000 €\n
+    - Crédit-bail immobilier: 850 000 € + 250 000 € en financement à terme\n
+    - Prêt bancaire moyen terme: 500 000 €\n\n
+    Pour plus d'informations, veuillez consulter les documents détaillés.\n\n
+    Domaine du Clochet - © ${new Date().getFullYear()}`;
     
-    PROJET:
-    - Acquisition et rénovation d'un domaine viticole historique
-    - Développement d'une offre œnotouristique complète
-    - Création de gîtes et chambres d'hôtes haut de gamme
-    
-    MARCHÉ:
-    - Croissance continue du tourisme expérientiel et de l'œnotourisme
-    - Forte demande pour des séjours authentiques en milieu rural
-    - Position géographique avantageuse dans une région viticole reconnue
-    
-    FINANCEMENT:
-    - Montant total du projet: 1 100 000 €
-    - Crédit-bail immobilier: 850 000 € + 250 000 € en financement à terme
-    - Prêt bancaire moyen terme: 500 000 €
-    
-    Pour plus d'informations, veuillez consulter les documents détaillés.
-    
-    Domaine du Clochet - © ${new Date().getFullYear()}
-  `;
-  
-  // Create a Blob with the content
-  const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
-  return blob;
+    // Fallback to text file if PDF generation fails
+    return new Blob([text], { type: 'text/plain;charset=utf-8' });
+  }
 };
 
 // Function to handle downloads
@@ -43,7 +86,7 @@ const handleDownload = async (type: 'all' | 'report') => {
   try {
     if (type === 'report') {
       const reportBlob = generateSiteReport();
-      saveAs(reportBlob, 'rapport-domaine-clochet.txt');
+      saveAs(reportBlob, 'rapport-domaine-clochet.pdf');
       toast({
         title: "Rapport généré avec succès",
         description: "Le rapport a été téléchargé sur votre appareil.",
@@ -67,7 +110,7 @@ const handleDownload = async (type: 'all' | 'report') => {
       
       // Also download the report
       const reportBlob = generateSiteReport();
-      saveAs(reportBlob, 'rapport-domaine-clochet.txt');
+      saveAs(reportBlob, 'rapport-domaine-clochet.pdf');
       
       toast({
         title: "Téléchargements réussis",

@@ -23,8 +23,8 @@ const Header = () => {
         marginRight: 'calc(-50vw + 50%)',
       }}
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-cream-50/70 to-cream-100/70"></div>
-      <div className="section-container text-center relative z-10">
+      <div className="absolute inset-0 bg-gradient-to-b from-beige-50/70 to-beige-100/70"></div>
+      <div className="container mx-auto px-4 text-center relative z-10">
         <div className="animate-fade-in [animation-delay:200ms] opacity-0">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 text-beige-800">Le Domaine du Clochet</h1>
           <p className="text-lg md:text-xl text-beige-700 max-w-2xl mx-auto mb-10">
