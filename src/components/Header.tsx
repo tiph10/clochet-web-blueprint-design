@@ -21,6 +21,8 @@ const Header = () => {
         width: '100vw',
         marginLeft: 'calc(-50vw + 50%)',
         marginRight: 'calc(-50vw + 50%)',
+        maxWidth: '100%',
+        overflowX: 'hidden'
       }}
     >
       <div className="absolute inset-0 bg-gradient-to-b from-beige-50/70 to-beige-100/70"></div>
