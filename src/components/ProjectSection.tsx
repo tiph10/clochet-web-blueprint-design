@@ -315,7 +315,7 @@ const ProjectSection = () => {
             <div className="flex flex-col md:flex-row items-center gap-8 bg-cream-50 p-8 rounded-lg">
               <div className="w-full md:w-1/3">
                 <img 
-                  src="/photos/CV.png" 
+                  src="/photos/CV2.png" 
                   alt="Tiphanie MORAY" 
                   className="h-64 w-64 mx-auto rounded-full object-cover"
                 />
