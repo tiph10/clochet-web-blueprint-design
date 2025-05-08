@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -62,7 +61,12 @@ const PdfViewer: React.FC<PdfViewerProps> = ({
 
   // Si nous devons utiliser les images de fallback mais aucune n'est définie, utiliser le carrousel d'ESTHETIQUE
   if (useImageFallback) {
-    return <PDFImageCarousel title={title || "Visualisation du document"} />;
+    // Vérifier si une erreur s'est produite pour un meilleur message
+    const carouselTitle = error 
+      ? `${title || "Visualisation du document"} (PDF non disponible - utilisation des images de secours)`
+      : title || "Visualisation du document";
+    
+    return <PDFImageCarousel title={carouselTitle} />;
   }
 
   return (
