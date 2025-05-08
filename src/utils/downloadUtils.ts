@@ -143,7 +143,7 @@ export const handleDownload = async (type: 'all' | 'report' | 'business' | 'devi
     // Map of PDF file paths
     const pdfFiles = {
       business: '/photos/business plan.pdf',
-      devis: '/photos/DEVIS TRAVAUX.pdf',
+      devis: '/photos/devis travaux.pdf',
       esthetique: '/photos/ESTHETIQUE.pdf',
       tresorerie: '/photos/TABLEAU DE TRESORERIE.pdf'
     };
