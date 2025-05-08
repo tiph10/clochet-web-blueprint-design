@@ -301,7 +301,17 @@ const ProjectSection = () => {
             </h3>
             
             <div className="bg-white p-6 rounded-lg border border-olive-100">
-              <PdfViewer pdfUrl="/photos/ESTHETIQUE.pdf" />
+              {/* Remplacer le PdfViewer par un carousel d'images */}
+              <div className="image-carousel">
+                {Array.from({ length: 16 }, (_, i) => (
+                  <img 
+                    key={i} 
+                    src={`/photos/ESTHETIQUE (${i + 1}).png`} 
+                    alt={`Concept design ${i + 1}`}
+                    className="carousel-image"
+                  />
+                ))}
+              </div>
             </div>
           </div>
           
