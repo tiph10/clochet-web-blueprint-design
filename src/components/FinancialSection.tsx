@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -331,7 +330,7 @@ const FinancialSection = () => {
                                 <span className="font-medium">15 ans</span>
                               </li>
                               <li className="flex justify-between">
-                                <span>Charge annuelle:</span>
+                                <span>Annuité de remboursement:</span>
                                 <span className="font-medium">~90 000 €</span>
                               </li>
                               <li className="flex justify-between">
@@ -362,7 +361,7 @@ const FinancialSection = () => {
                                 <span className="font-medium">3,85%</span>
                               </li>
                               <li className="flex justify-between">
-                                <span>Charge annuelle:</span>
+                                <span>Annuité de remboursement:</span>
                                 <span className="font-medium">~50 000 €</span>
                               </li>
                             </ul>

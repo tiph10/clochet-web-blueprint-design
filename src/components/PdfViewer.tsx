@@ -6,6 +6,7 @@ import 'react-pdf/dist/esm/Page/TextLayer.css';
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
 import ImageCarousel from './ImageCarousel';
+import PDFImageCarousel from './PDFImageCarousel';
 
 // Use specific version that matches our installed package
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -14,16 +15,22 @@ interface PdfViewerProps {
   pdfUrl: string;
   fallbackImages?: string[];
   title?: string;
+  useCarouselByDefault?: boolean;
 }
 
-const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl, fallbackImages, title }) => {
+const PdfViewer: React.FC<PdfViewerProps> = ({ 
+  pdfUrl, 
+  fallbackImages, 
+  title,
+  useCarouselByDefault = true
+}) => {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [scale, setScale] = useState<number>(1.0);
   const [error, setError] = useState<string | null>(null);
   
-  // Use the image carousel as a fallback if specified or if there's an error
-  const useImageFallback = !!error || !!fallbackImages;
+  // Utiliser le carrousel d'images par défaut si spécifié, ou si une erreur ou des images de fallback sont définies
+  const useImageFallback = useCarouselByDefault || !!error || !!fallbackImages;
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
@@ -48,9 +55,14 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl, fallbackImages, title }) 
     setScale(newScale);
   }
 
-  // If we have fallback images and either specified to use them or there's an error, show carousel instead
+  // Si nous devons utiliser les images de fallback et qu'elles sont définies
   if (useImageFallback && fallbackImages && fallbackImages.length > 0) {
     return <ImageCarousel images={fallbackImages} title={title} />;
+  }
+
+  // Si nous devons utiliser les images de fallback mais aucune n'est définie, utiliser le carrousel d'ESTHETIQUE
+  if (useImageFallback) {
+    return <PDFImageCarousel title={title || "Visualisation du document"} />;
   }
 
   return (
