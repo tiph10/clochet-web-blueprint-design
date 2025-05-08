@@ -301,17 +301,18 @@ const ProjectSection = () => {
             </h3>
             
             <div className="bg-white p-6 rounded-lg border border-olive-100">
-              {/* Remplacer le PdfViewer par un carousel d'images */}
-              <div className="image-carousel">
+              {/* Carousel d'images utilisant react-slick */}
+              <Slider {...carouselSettings}>
                 {Array.from({ length: 16 }, (_, i) => (
-                  <img 
-                    key={i} 
-                    src={`/photos/ESTHETIQUE (${i + 1}).png`} 
-                    alt={`Concept design ${i + 1}`}
-                    className="carousel-image"
-                  />
+                  <div key={i} className="px-2">
+                    <img 
+                      src={`/photos/ESTHETIQUE (${i + 1}).png`} 
+                      alt={`Concept design ${i + 1}`} 
+                      className="w-full h-auto object-contain mx-auto"
+                    />
+                  </div>
                 ))}
-              </div>
+              </Slider>
             </div>
           </div>
           
