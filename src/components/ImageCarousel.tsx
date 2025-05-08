@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   Carousel,
@@ -27,6 +26,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
   aspectRatio = "square" 
 }) => {
   const [openImage, setOpenImage] = useState<string | null>(null);
+  const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
   const handleImageClick = (src: string) => {
     setOpenImage(src);
@@ -34,6 +34,11 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
 
   const handleCloseDialog = () => {
     setOpenImage(null);
+  };
+
+  const handleImageError = (src: string) => {
+    console.error(`Erreur de chargement pour l'image: ${src}`);
+    setImageErrors(prev => ({ ...prev, [src]: true }));
   };
 
   return (
@@ -44,7 +49,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
       
       <Carousel className="w-full">
         <CarouselContent>
-          {images.map((src, index) => (
+          {images.filter(src => !imageErrors[src]).map((src, index) => (
             <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
               <div className="p-1">
                 <Card>
@@ -54,6 +59,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
                       alt={`Slide ${index + 1}`} 
                       className="rounded-md object-cover w-full h-full cursor-pointer"
                       onClick={() => handleImageClick(src)}
+                      onError={() => handleImageError(src)}
                     />
                   </CardContent>
                 </Card>
@@ -64,7 +70,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
         <CarouselPrevious className="left-0 lg:-left-12" />
         <CarouselNext className="right-0 lg:-right-12" />
       </Carousel>
-
+      
       {/* Image Lightbox Dialog */}
       <Dialog open={!!openImage} onOpenChange={handleCloseDialog}>
         <DialogContent className="sm:max-w-4xl p-0 bg-transparent border-0">
@@ -77,7 +83,11 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
               <img 
                 src={openImage} 
                 alt="Image agrandie" 
-                className="w-full h-auto max-h-[80vh]" 
+                className="w-full h-auto max-h-[80vh]"
+                onError={() => {
+                  handleImageError(openImage);
+                  handleCloseDialog();
+                }}
               />
             )}
           </div>
