@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapPin, Home, Leaf, Building, Bed, Users, Clock, ArrowRight, FileText } from "lucide-react";
 import DomainMap from './DomainMap';
-import PdfViewer from './PdfViewer';
+import PDFImageCarousel from './PDFImageCarousel';
 
 const ProjectSection = () => {
   return (
@@ -301,7 +300,7 @@ const ProjectSection = () => {
             </h3>
             
             <div className="bg-white p-6 rounded-lg border border-olive-100">
-              <PdfViewer pdfUrl="/photos/ESTHETIQUE.pdf" />
+              <PDFImageCarousel title="Esthétique du projet" />
             </div>
           </div>
           
