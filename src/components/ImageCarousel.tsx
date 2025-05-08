@@ -41,35 +41,45 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
     setImageErrors(prev => ({ ...prev, [src]: true }));
   };
 
+  // Filtrer les images valides
+  const validImages = images.filter(src => !imageErrors[src]);
+
   return (
     <div className="flex flex-col items-center w-full max-w-5xl mx-auto">
       {title && (
         <h3 className="text-xl font-semibold mb-4 text-beige-800">{title}</h3>
       )}
       
-      <Carousel className="w-full">
-        <CarouselContent>
-          {images.filter(src => !imageErrors[src]).map((src, index) => (
-            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-              <div className="p-1">
-                <Card>
-                  <CardContent className={`flex ${aspectRatio === "square" ? "aspect-square" : ""} items-center justify-center p-2`}>
-                    <img 
-                      src={src} 
-                      alt={`Slide ${index + 1}`} 
-                      className="rounded-md object-cover w-full h-full cursor-pointer"
-                      onClick={() => handleImageClick(src)}
-                      onError={() => handleImageError(src)}
-                    />
-                  </CardContent>
-                </Card>
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="left-0 lg:-left-12" />
-        <CarouselNext className="right-0 lg:-right-12" />
-      </Carousel>
+      {validImages.length > 0 ? (
+        <Carousel className="w-full">
+          <CarouselContent>
+            {validImages.map((src, index) => (
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                <div className="p-1">
+                  <Card>
+                    <CardContent className={`flex ${aspectRatio === "square" ? "aspect-square" : ""} items-center justify-center p-2`}>
+                      <img 
+                        src={src} 
+                        alt={`Slide ${index + 1}`} 
+                        className="rounded-md object-cover w-full h-full cursor-pointer"
+                        onClick={() => handleImageClick(src)}
+                        onError={() => handleImageError(src)}
+                        loading="lazy" // Amélioration: chargement paresseux
+                      />
+                    </CardContent>
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="left-0 lg:-left-12" />
+          <CarouselNext className="right-0 lg:-right-12" />
+        </Carousel>
+      ) : (
+        <div className="p-8 bg-cream-50 rounded-md text-center">
+          <p className="text-olive-700">Aucune image disponible ou les images n'ont pas pu être chargées.</p>
+        </div>
+      )}
       
       {/* Image Lightbox Dialog */}
       <Dialog open={!!openImage} onOpenChange={handleCloseDialog}>
