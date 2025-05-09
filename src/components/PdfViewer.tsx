@@ -1,11 +1,10 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
-import ImageCarousel from './ImageCarousel';
 import PDFImageCarousel from './PDFImageCarousel';
 
 // Use specific version that matches our installed package
@@ -28,8 +27,20 @@ const PdfViewer: React.FC<PdfViewerProps> = ({
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [scale, setScale] = useState<number>(1.0);
   const [error, setError] = useState<string | null>(null);
+  const [isPdfMode, setIsPdfMode] = useState<boolean>(!useCarouselByDefault);
+  const [isComponentMounted, setIsComponentMounted] = useState<boolean>(false);
   
-  // Utiliser le carrousel d'images par défaut si spécifié, ou si une erreur ou des images de fallback sont définies
+  // Assurer que le composant est monté avant de charger le PDF pour éviter les conflits
+  useEffect(() => {
+    setIsComponentMounted(true);
+    
+    // Cleanup lors du démontage
+    return () => {
+      setIsComponentMounted(false);
+    };
+  }, []);
+  
+  // Si nous devons utiliser les images de fallback ou si une erreur est survenue
   const useImageFallback = useCarouselByDefault || !!error || !!fallbackImages;
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
@@ -54,102 +65,144 @@ const PdfViewer: React.FC<PdfViewerProps> = ({
     const newScale = Math.max(0.5, Math.min(2.5, scale + delta));
     setScale(newScale);
   }
+  
+  // Toggle entre l'affichage PDF et le carrousel
+  const toggleViewMode = () => {
+    setIsPdfMode(!isPdfMode);
+  };
 
   // Si nous devons utiliser les images de fallback et qu'elles sont définies
-  if (useImageFallback && fallbackImages && fallbackImages.length > 0) {
-    return <ImageCarousel images={fallbackImages} title={title} />;
-  }
-
-  // Si nous devons utiliser les images de fallback mais aucune n'est définie, utiliser le carrousel d'ESTHETIQUE
-  if (useImageFallback) {
-    return <PDFImageCarousel title={title || "Visualisation du document"} />;
+  if (useImageFallback && !isPdfMode) {
+    return (
+      <>
+        {!useCarouselByDefault && (
+          <div className="mb-4 flex justify-end">
+            <Button 
+              onClick={toggleViewMode}
+              variant="outline"
+              size="sm"
+            >
+              Voir le PDF
+            </Button>
+          </div>
+        )}
+        
+        {fallbackImages && fallbackImages.length > 0 ? (
+          <PDFImageCarousel title={title} />
+        ) : (
+          <PDFImageCarousel title={title || "Visualisation du document"} />
+        )}
+      </>
+    );
   }
 
   return (
-    <div className="flex flex-col items-center">
-      {error && (
-        <div className="py-4 text-center text-red-500 mb-4">
-          {error}
-          <p className="mt-2 text-sm">Vérifiez que le chemin "{pdfUrl}" est correct.</p>
+    <>
+      {useCarouselByDefault && (
+        <div className="mb-4 flex justify-end">
+          <Button 
+            onClick={toggleViewMode}
+            variant="outline"
+            size="sm"
+          >
+            {isPdfMode ? 'Voir les images' : 'Voir le PDF'}
+          </Button>
         </div>
       )}
       
-      <Document
-        file={pdfUrl}
-        onLoadSuccess={onDocumentLoadSuccess}
-        onLoadError={onDocumentLoadError}
-        loading={
-          <div className="py-8 flex justify-center items-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-beige-700"></div>
-          </div>
-        }
-        error={
-          <div className="py-8 text-center text-red-500">
-            Impossible de charger le PDF. Veuillez vérifier le chemin du fichier.
-          </div>
-        }
-        options={{
-          cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@' + pdfjs.version + '/cmaps/',
-          cMapPacked: true,
-        }}
-      >
-        {numPages && (
-          <Page 
-            pageNumber={pageNumber} 
-            scale={scale}
-            renderTextLayer={false}
-            renderAnnotationLayer={false}
-            className="shadow-md"
-          />
-        )}
-      </Document>
-      
-      {numPages && (
-        <div className="flex items-center justify-between w-full mt-4">
-          <div className="flex space-x-2">
-            <Button 
-              onClick={() => changePage(-1)} 
-              disabled={pageNumber <= 1}
-              variant="outline"
-              size="sm"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            
-            <span className="px-4 py-1 bg-cream-50 rounded-md text-sm">
-              {pageNumber} / {numPages || '?'}
-            </span>
-            
-            <Button 
-              onClick={() => changePage(1)} 
-              disabled={numPages === null || pageNumber >= numPages}
-              variant="outline"
-              size="sm"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
+      {isPdfMode && isComponentMounted ? (
+        <div className="flex flex-col items-center">
+          {error && (
+            <div className="py-4 text-center text-red-500 mb-4">
+              {error}
+              <p className="mt-2 text-sm">Vérifiez que le chemin "{pdfUrl}" est correct.</p>
+            </div>
+          )}
           
-          <div className="flex space-x-2">
-            <Button 
-              onClick={() => changeScale(-0.1)} 
-              variant="outline"
-              size="sm"
-            >
-              <ZoomOut className="h-4 w-4" />
-            </Button>
-            
-            <Button 
-              onClick={() => changeScale(0.1)} 
-              variant="outline"
-              size="sm"
-            >
-              <ZoomIn className="h-4 w-4" />
-            </Button>
-          </div>
+          <Document
+            file={pdfUrl}
+            onLoadSuccess={onDocumentLoadSuccess}
+            onLoadError={onDocumentLoadError}
+            loading={
+              <div className="py-8 flex justify-center items-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-beige-700"></div>
+              </div>
+            }
+            error={
+              <div className="py-8 text-center text-red-500">
+                Impossible de charger le PDF. Veuillez vérifier le chemin du fichier.
+              </div>
+            }
+            options={{
+              cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@' + pdfjs.version + '/cmaps/',
+              cMapPacked: true,
+            }}
+          >
+            {numPages && (
+              <Page 
+                pageNumber={pageNumber} 
+                scale={scale}
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
+                className="shadow-md"
+              />
+            )}
+          </Document>
+          
+          {numPages && (
+            <div className="flex items-center justify-between w-full mt-4">
+              <div className="flex space-x-2">
+                <Button 
+                  onClick={() => changePage(-1)} 
+                  disabled={pageNumber <= 1}
+                  variant="outline"
+                  size="sm"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                
+                <span className="px-4 py-1 bg-cream-50 rounded-md text-sm">
+                  {pageNumber} / {numPages || '?'}
+                </span>
+                
+                <Button 
+                  onClick={() => changePage(1)} 
+                  disabled={numPages === null || pageNumber >= numPages}
+                  variant="outline"
+                  size="sm"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+              
+              <div className="flex space-x-2">
+                <Button 
+                  onClick={() => changeScale(-0.1)} 
+                  variant="outline"
+                  size="sm"
+                >
+                  <ZoomOut className="h-4 w-4" />
+                </Button>
+                
+                <Button 
+                  onClick={() => changeScale(0.1)} 
+                  variant="outline"
+                  size="sm"
+                >
+                  <ZoomIn className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+      ) : !isPdfMode ? (
+        <PDFImageCarousel title={title || "Visualisation du document"} />
+      ) : (
+        <div className="py-8 flex justify-center items-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-beige-700"></div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

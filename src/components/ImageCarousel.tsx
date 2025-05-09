@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Carousel,
   CarouselContent,
@@ -27,6 +27,29 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
   aspectRatio = "square" 
 }) => {
   const [openImage, setOpenImage] = useState<string | null>(null);
+  const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
+
+  // Préchargement des images pour éviter les corruptions
+  useEffect(() => {
+    const imageCache: Record<string, boolean> = {};
+    
+    images.forEach((src) => {
+      const img = new Image();
+      img.onload = () => {
+        setLoadedImages(prev => ({
+          ...prev,
+          [src]: true
+        }));
+      };
+      img.onerror = (error) => {
+        console.error(`Error loading image ${src}:`, error);
+      };
+      img.src = src;
+      imageCache[src] = false;
+    });
+    
+    setLoadedImages(imageCache);
+  }, [images]);
 
   const handleImageClick = (src: string) => {
     setOpenImage(src);
@@ -49,12 +72,18 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
               <div className="p-1">
                 <Card>
                   <CardContent className={`flex ${aspectRatio === "square" ? "aspect-square" : ""} items-center justify-center p-2`}>
-                    <img 
-                      src={src} 
-                      alt={`Slide ${index + 1}`} 
-                      className="rounded-md object-cover w-full h-full cursor-pointer"
-                      onClick={() => handleImageClick(src)}
-                    />
+                    {loadedImages[src] ? (
+                      <img 
+                        src={src} 
+                        alt={`Slide ${index + 1}`} 
+                        className="rounded-md object-cover w-full h-full cursor-pointer"
+                        onClick={() => handleImageClick(src)}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-md">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-beige-700"></div>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </div>
