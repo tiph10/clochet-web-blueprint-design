@@ -85,7 +85,6 @@ export const generateSiteReport = async () => {
             logging: false,
             width: standardWidth, // Fixed width for consistency
             windowWidth: standardWidth,
-            letterRendering: true, // Better text rendering
             imageTimeout: 15000
           });
           
@@ -143,7 +142,6 @@ export const generateSiteReport = async () => {
               logging: false,
               width: standardWidth,
               windowWidth: standardWidth,
-              letterRendering: true,
               imageTimeout: 15000
             });
             
