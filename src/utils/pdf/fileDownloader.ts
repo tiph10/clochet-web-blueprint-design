@@ -3,7 +3,7 @@ import { saveAs } from 'file-saver';
 import { toast } from "@/components/ui/use-toast";
 import { generateSiteReport } from './pdfGenerator';
 
-// Map of PDF file paths
+// Map of PDF file paths with public URL handling
 const PDF_FILES = {
   business: '/photos/business plan.pdf',
   devis: '/photos/devis travaux.pdf',
@@ -11,38 +11,85 @@ const PDF_FILES = {
   tresorerie: '/photos/TABLEAU DE TRESORERIE.pdf'
 };
 
+// Function to ensure we have the correct URL for environment
+const getCorrectUrl = (url: string): string => {
+  // Remove leading slash if it exists to prevent double slashes
+  const cleanPath = url.startsWith('/') ? url.substring(1) : url;
+  
+  // If it's already a full URL, return it
+  if (cleanPath.startsWith('http://') || cleanPath.startsWith('https://')) {
+    return cleanPath;
+  }
+  
+  // Handle different environments appropriately
+  // In production, use the relative path which will be resolved against the base URL
+  return cleanPath;
+};
+
 // Function to download a single PDF document with improved error handling
 const downloadSinglePDF = async (url: string, filename: string): Promise<void> => {
   try {
-    // Use fetch with proper response handling
-    const response = await fetch(url, {
+    // Get the correct URL for the current environment
+    const correctUrl = getCorrectUrl(url);
+    console.log(`Attempting to download from: ${correctUrl}`);
+    
+    // Use fetch with proper response handling and cache busting
+    const response = await fetch(correctUrl, {
       method: 'GET',
-      cache: 'no-cache',
+      cache: 'no-store', // Force fresh content instead of no-cache
       headers: {
-        'Content-Type': 'application/pdf',
+        'Accept': 'application/pdf,application/octet-stream,*/*',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
       },
     });
     
     if (!response.ok) {
+      console.error(`HTTP error status: ${response.status}`);
       throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    // Ensure we're getting a valid PDF before proceeding
-    const contentType = response.headers.get('Content-Type');
-    if (contentType && !contentType.includes('application/pdf') && !contentType.includes('application/octet-stream')) {
-      console.warn(`Expected PDF content but got ${contentType}`);
     }
     
     // Get the blob properly
     const blob = await response.blob();
     
+    // Debug information
+    console.log(`Downloaded file size: ${blob.size} bytes for ${filename}`);
+    console.log(`Content type: ${blob.type}`);
+    
     // Check if the blob size is reasonable for a PDF (>5KB to avoid corrupt placeholders)
     if (blob.size < 5000) {
-      console.warn(`PDF file size is suspiciously small: ${blob.size} bytes for ${filename}`);
+      console.warn(`PDF file size is suspiciously small: ${blob.size} bytes for ${filename}. This might indicate corruption.`);
+      
+      // Create a text representation if the file appears to be corrupt
+      if (blob.size < 2000) {
+        const text = await blob.text();
+        console.error(`Content of suspicious file: ${text.substring(0, 100)}...`);
+      }
+    }
+    
+    // For extra safety, verify it's a PDF by checking the first bytes (PDF magic number)
+    if (blob.size > 4) {
+      const fileReader = new FileReader();
+      
+      fileReader.onloadend = function(e) {
+        const arr = new Uint8Array(e.target?.result as ArrayBuffer).subarray(0, 4);
+        const header = String.fromCharCode.apply(null, Array.from(arr));
+        
+        // Check PDF header signature
+        if (header !== "%PDF") {
+          console.error(`File doesn't have PDF header: ${header}`);
+        } else {
+          console.log("Valid PDF header detected");
+        }
+      };
+      
+      // Read the first few bytes
+      const headerSlice = blob.slice(0, 4);
+      fileReader.readAsArrayBuffer(headerSlice);
     }
     
     // Use saveAs to download the file
-    saveAs(blob, filename);
+    saveAs(new Blob([blob], {type: 'application/pdf'}), filename);
     
     toast({
       title: "Téléchargement réussi",
@@ -89,21 +136,32 @@ const downloadAllPDFs = async (): Promise<void> => {
       const url = PDF_FILES[key];
       const filename = url.split('/').pop() || 'document.pdf';
       
+      // Get the correct URL for the current environment
+      const correctUrl = getCorrectUrl(url);
+      console.log(`Attempting to download from: ${correctUrl} for key ${key}`);
+      
       // Use fetch with proper response handling
-      const response = await fetch(url, {
+      const response = await fetch(correctUrl, {
         method: 'GET',
-        cache: 'no-cache',
+        cache: 'no-store',
         headers: {
-          'Content-Type': 'application/pdf',
+          'Accept': 'application/pdf,application/octet-stream,*/*',
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
         },
       });
       
       if (!response.ok) {
+        console.error(`HTTP error status for ${key}: ${response.status}`);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       // Get the blob properly
       const blob = await response.blob();
+      
+      // Debug information
+      console.log(`Downloaded file ${key} size: ${blob.size} bytes`);
+      console.log(`Content type for ${key}: ${blob.type}`);
       
       // Check for suspicious file size
       if (blob.size < 5000) {
@@ -111,7 +169,7 @@ const downloadAllPDFs = async (): Promise<void> => {
       }
       
       // Use saveAs to download the file
-      saveAs(blob, filename);
+      saveAs(new Blob([blob], {type: 'application/pdf'}), filename);
       successCount++;
     } catch (error) {
       console.error(`Erreur lors du téléchargement du PDF ${key}:`, error);
